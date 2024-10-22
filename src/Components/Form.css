@@ -1,0 +1,31 @@
+.parent{
+  margin-top: 20px;
+  padding: 0px;
+  border-radius: 25px;
+  background-image: linear-gradient(to right,#B23565,#24266F) !important;
+}
+.icon{
+  border: none !important;
+  font-size: 20px;
+}
+input{
+  border-left: none !important;
+}
+.form{
+  background-color: #E9E9F1;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+.lock{
+  height: 20px;
+}
+.gender{
+  height: 15px;
+}
+h3{
+  color: #A14066;
+}
+.button{
+  position: absolute;
+  bottom: 115px;
+}
