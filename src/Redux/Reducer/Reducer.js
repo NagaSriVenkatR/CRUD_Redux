@@ -1,4 +1,4 @@
-const initialstate = {
+const initialState = {
   formData: {
     name: "",
     email: "",
@@ -18,11 +18,45 @@ const initialstate = {
     location: "",
   },
 };
-function formReducer(state = initialstate, action) {
+function formReducer(state = initialState, action) {
   switch (action.type) {
     case "UPDATE_FORM":
-      return;
+      return {
+        ...state,
+        formData: {
+          ...state.formData,
+          [action.payload.field]: action.payload.value,
+        },
+        error: {
+          ...state.error,
+          [action.payload.field]: "", // Clear error when field is updated
+        },
+      };
+
+    case "SET_ERROR":
+      return {
+        ...state,
+        error: {
+          ...state.error,
+          [action.payload.field]: action.payload.error,
+        },
+      };
+
     default:
-      break;
+      return state;
   }
 }
+
+// Action creators
+export const updateForm = (field, value) => ({
+  type: "UPDATE_FORM",
+  payload: { field, value },
+});
+
+export const setError = (field, error) => ({
+  type: "SET_ERROR",
+  payload: { field, error },
+});
+
+export default formReducer;
+

@@ -11,6 +11,18 @@
 input{
   border-left: none !important;
 }
+.arrow{
+  position: absolute;
+  top:50%;
+  left:48.5%;
+  border-radius: 50%;
+  color: white;
+  padding: 10px;
+  background-image: linear-gradient(to bottom,#B23565,#24266F) !important;
+}
+.arrow:hover{
+  background-image: linear-gradient(to top,#B23565,#24266F) !important;
+}
 .form{
   background-color: #E9E9F1;
   border-top-left-radius: 15px;
@@ -19,7 +31,7 @@ input{
 select{
   border-left: none !important;
 }
-h3{
+h3,.accept{
   color: #B23565;
 }
 p{
@@ -33,6 +45,22 @@ p{
 }
 .icon{
   color: lightgray;
+}
+.custom-checkbox {
+  content: "✔"; /* Display a checkmark (tick) */
+  color: #B23565 !important; 
+  background-color: #E9E9F1 !important;
+  position: absolute;
+  border-radius: 40% !important; /* Optional: Make the checkbox rounded */
+  border: 3px solid #B23565 !important;
+  width: 25px;
+  height: 25px;
+  border-radius: 40% !important; /* Optional: Make the checkbox rounded */
+  border: 3px solid #B23565 !important;
+}
+.custom-checkbox:checked::after {
+  content: "✔"; /* Display a checkmark (tick) */
+  color: #cd3c73 !important; 
 }
 .btn-primary{
   padding: 8px 30px;
@@ -79,4 +107,81 @@ p{
   background-color: #E9E9F1;
   border-top-right-radius: 30px;
   border-bottom-right-radius: 30px;
+}
+@media screen and (min-width:1430px) and (max-width:1450px) {
+  .button{
+  position: absolute;
+  bottom: 38%;
+  justify-content: space-between !important;
+  }
+  .arrow{
+  top:35%;
+  }
+}
+@media screen and (min-width:1020px) and (max-width:1025px) {
+  .arrow{
+  top:40%;
+  }
+  .button{
+  position: absolute;
+  bottom: 24%;
+  justify-content: space-between !important;
+  }
+
+}
+@media screen and (min-width:760px) and (max-width:778px) {
+  .arrow{
+  top:55%;
+  left: 47%;
+  }
+  .button{
+  right: 8%;
+  position: absolute;
+  bottom: -8.5%;
+  justify-content: space-between !important;
+}
+}
+@media screen and (max-width:430px) {
+  .parent{
+   
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 25px;
+  background-image: linear-gradient(to top,#B23565,#24266F) !important;
+  }
+  .start{
+    margin-bottom: 20px;
+  }
+  .upward{
+    position: absolute;
+    top:33%;
+    right: 45%;
+    border-radius: 50%;
+    padding: 10px;
+     background-image: linear-gradient(to bottom,#B23565,#24266F) !important;
+  }
+  .upward:hover{
+    background-image: linear-gradient(to top,#B23565,#24266F) !important;
+  }
+   .sign{
+    margin-right: 90px ;
+  }
+  .form{
+    padding: 30px;
+    border-radius: 15px;
+  }
+}
+@media screen and (max-width:378px) {
+  .sign{
+    margin-right: 40px ;
+  }
+}
+@media screen and (max-width:330px) {
+  .sign{
+    margin-right: 10px ;
+  }
+  .form{
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
 }
