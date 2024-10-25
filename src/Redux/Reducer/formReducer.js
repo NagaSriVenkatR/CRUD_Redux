@@ -46,17 +46,5 @@ function formReducer(state = initialState, action) {
       return state;
   }
 }
-
-// Action creators
-export const updateForm = (field, value) => ({
-  type: "UPDATE_FORM",
-  payload: { field, value },
-});
-
-export const setError = (field, error) => ({
-  type: "SET_ERROR",
-  payload: { field, error },
-});
-
 export default formReducer;
 

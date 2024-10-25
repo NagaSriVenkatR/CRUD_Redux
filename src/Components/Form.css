@@ -1,5 +1,6 @@
 .parent{
-  margin-top: 20px;
+  margin-top: 10px;
+  align-items: center;
   padding: 0px;
   border-radius: 25px;
   background-image: linear-gradient(to right,#B23565,#24266F) !important;
@@ -7,6 +8,13 @@
 .icon{
   border: none !important;
   font-size: 20px;
+}
+.mb-3{
+  margin-bottom: 20px !important;
+}
+.error{
+  position: absolute;
+  font-size: 14px;
 }
 input{
   border-left: none !important;
@@ -40,7 +48,7 @@ p{
 }
 .button{
   position: absolute;
-  bottom: 70px;
+  bottom: 50px;
   justify-content: space-between !important;
 }
 .icon{
@@ -111,7 +119,7 @@ p{
 @media screen and (min-width:1430px) and (max-width:1450px) {
   .button{
   position: absolute;
-  bottom: 38%;
+  bottom: 35%;
   justify-content: space-between !important;
   }
   .arrow{
@@ -124,7 +132,7 @@ p{
   }
   .button{
   position: absolute;
-  bottom: 24%;
+  bottom: 20%;
   justify-content: space-between !important;
   }
 
@@ -137,13 +145,12 @@ p{
   .button{
   right: 8%;
   position: absolute;
-  bottom: -8.5%;
+  bottom: -14.5%;
   justify-content: space-between !important;
 }
 }
 @media screen and (max-width:430px) {
   .parent{
-   
   margin-top: 20px;
   padding: 20px;
   border-radius: 25px;

@@ -1,6 +1,6 @@
-import { legacy_createStore as createStore } from "@reduxjs/toolkit";
-import Maths from "../Reducer/Maths";
+import { legacy_createStore as createStore } from "redux";
+import formReducer from "../Reducer/formReducer";
 import { compose } from "redux";
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const Store = createStore(Maths, composeEnhancer());
+const Store = createStore(formReducer, composeEnhancer());
 export default Store;
