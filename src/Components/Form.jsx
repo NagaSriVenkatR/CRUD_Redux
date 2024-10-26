@@ -7,13 +7,15 @@ import gender from './male-and-female.png'
 import clock from  './rotation-lock .png'
 import Upward from './upward-arrow.png'
 import { IoPersonCircle } from 'react-icons/io5';
-import { FaPhoneAlt } from 'react-icons/fa';
+import { FaCircle, FaPhoneAlt } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { FaLocationDot } from 'react-icons/fa6';
 import Arrow from './right-chevron.png'
-import { updateForm, setError } from "../Redux/Action/Action";
+import { updateForm, setError, submitFormData } from "../Redux/Action/Action";
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 function Form() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.formData); // Access formData from state
   const errors = useSelector((state) => state.error); // Access errors from state
@@ -126,94 +128,98 @@ function Form() {
          break;
      }
    };
+   const validateForm = () => {
+    if (formData.name === "") {
+      dispatch(setError("name", "Name is required"));
+    } else {
+      dispatch(setError("name", ""));
+    }
+    if (formData.phoneNumber === "") {
+      dispatch(setError("phoneNumber", "Phonenumber is required"));
+    } else {
+      if (!phonenumberPattern.test(formData.phoneNumber)) {
+        dispatch(
+          setError("phoneNumber", "Enter a valid 10-digit phone number")
+        );
+      } else {
+        dispatch(setError("phoneNumber", ""));
+      }
+    }
+    if (formData.email === "") {
+      dispatch(setError("email", "Email is required"));
+    } else {
+      if (!emailPattern.test(formData.email)) {
+        dispatch(setError("email", "Enter a valid email address"));
+      } else {
+        dispatch(setError("email", ""));
+      }
+    }
+    if (formData.password === "") {
+      dispatch(setError("password", "Password is required"));
+    } else {
+      if (!minlengthCharacterPattern.test(formData.password)) {
+        dispatch(
+          setError(
+            "password",
+            "Password must be at least 8 characters required"
+          )
+        );
+      } else if (!lowerCasePattern.test(formData.password)) {
+        dispatch(
+          setError("password", "Password must be at least 1 lowercase required")
+        );
+      } else if (!numberPattern.test(formData.password)) {
+        dispatch(
+          setError("password", "Password must be at least 1 number required")
+        );
+      } else if (!specialCharacterPattern.test(formData.password)) {
+        dispatch(
+          setError(
+            "password",
+            "Password must be at least 1 special character required"
+          )
+        );
+      } else if (!upperCasePattern.test(formData.password)) {
+        dispatch(
+          setError("password", "Password must be at least 1 uppercase required")
+        );
+      } else {
+        dispatch(setError("password", ""));
+      }
+    }
+    if (formData.confirmPassword === "") {
+      dispatch(setError("confirmPassword", "Confirm Password is required"));
+    } else {
+      if (formData.password !== formData.confirmPassword) {
+        dispatch(
+          setError(
+            "confirmPassword",
+            "Confirm password do not match with password"
+          )
+        );
+      } else {
+        dispatch(setError("confirmPassword", ""));
+      }
+    }
+    if (formData.location === "") {
+      dispatch(setError("location", "Location is required"));
+    } else {
+      dispatch(setError("location", ""));
+    }
+    if (formData.gender === "") {
+      dispatch(setError("gender", "Gender is required"));
+    } else {
+      dispatch(setError("gender", ""));
+    }
+   }
    const handleSubmit = (e) => {
      e.preventDefault();
-     if (formData.name === "") {
-       dispatch(setError("name", "Name is required"));
-     }else{
-      dispatch(setError("name",""));
-     }
-     if (formData.phoneNumber === "") {
-       dispatch(setError("phoneNumber", "Phonenumber is required"));
-     } else {
-       if (!phonenumberPattern.test(formData.phoneNumber)) {
-         dispatch(
-           setError("phoneNumber", "Enter a valid 10-digit phone number")
-         );
-       }else{
-        dispatch(
-          setError("phoneNumber", "")
-        );
-       }
-     }
-     if (formData.email === "") {
-       dispatch(setError("email", "Email is required"));
-     } else {
-       if (!emailPattern.test(formData.email)) {
-         dispatch(setError("email", "Enter a valid email address"));
-       } else {
-         dispatch(setError("email", ""));
-       }
-     }
-     if (formData.password === "") {
-       dispatch(setError("password", "Password is required"));
-     } else {
-       if (!minlengthCharacterPattern.test(formData.password)) {
-         dispatch(
-           setError(
-             "password",
-             "Password must be at least 8 characters required"
-           )
-         );
-       } else if (!lowerCasePattern.test(formData.password)) {
-         dispatch(
-           setError(
-             "password",
-             "Password must be at least 1 lowercase required"
-           )
-         );
-       } else if (!numberPattern.test(formData.password)) {
-         dispatch(
-           setError("password", "Password must be at least 1 number required")
-         );
-       } else if (!specialCharacterPattern.test(formData.password)) {
-         dispatch(
-           setError(
-             "password",
-             "Password must be at least 1 special character required"
-           )
-         );
-       } else if (!upperCasePattern.test(formData.password)) {
-         dispatch(
-           setError(
-             "password",
-             "Password must be at least 1 uppercase required"
-           )
-         );
-       } else {
-         dispatch(setError("password", ""));
-       }
-     }
-     if (formData.confirmPassword === "") {
-       dispatch(setError("confirmPassword", "Confirm Password is required"));
-     } else {
-       if (formData.password !== formData.confirmPassword) {
-         dispatch(
-           setError("confirmPassword", "Confirm password do not match with password")
-         );
-       } else {
-         dispatch(setError("confirmPassword", ""));
-       }
-     }
-     if (formData.location === "") {
-       dispatch(setError("location", "Location is required"));
-     } else {
-       dispatch(setError("location", ""));
-     }
-     if (formData.gender === "") {
-      dispatch(setError("gender","Gender is required"));
-     }else{
-          dispatch(setError('gender',""))
+     
+      const isValid = validateForm(); // Create validation logic here if not already
+      
+      if (isValid) {
+        dispatch(submitFormData(formData));
+        navigate("/table"); // Navigate to the table page
       }
    };
 
@@ -230,17 +236,28 @@ function Form() {
     <div className="container">
       <div className="row justify-content-center">
         <div className="col-xxl-8 d-md-flex parent py-5">
-          <div className="col-md-6 my-md-5 start ">
-            <div className="mt-md-4">
+          <div className="col-md-6  start">
+            <div className="mt-md-4 text-center">
               <img src={Logo} alt="" />
               <h2 className="text-white">STARTECH</h2>
             </div>
-            <div className="float-start d-md-block d-none">
+            <div className="d-flex float-start d-md-block d-none  mb-5 regis">
               <div className="register mb-3">
                 <h3>REGISTER</h3>
               </div>
               <div className="register">
                 <h3>LOGIN</h3>
+              </div>
+            </div>
+            <div className="color d-md-flex d-none">
+              <div className="blue me-2">
+                <FaCircle />
+              </div>
+              <div className="orange me-2">
+                <FaCircle />
+              </div>
+              <div className="white">
+                <FaCircle />
               </div>
             </div>
           </div>
@@ -394,10 +411,20 @@ function Form() {
               </div>
               <div className="d-flex d-md-none butt">
                 <div className="col-md-4 sign">
-                  <button className="btn btn-danger reset" onClick={handleReset}>RESET</button>
+                  <button
+                    className="btn btn-danger reset"
+                    onClick={handleReset}
+                  >
+                    RESET
+                  </button>
                 </div>
                 <div className="col-md-4">
-                  <button className="btn btn-primary reset" onClick={handleSubmit}>SIGNUP</button>
+                  <button
+                    className="btn btn-primary reset"
+                    onClick={handleSubmit}
+                  >
+                    SIGNUP
+                  </button>
                 </div>
               </div>
             </form>

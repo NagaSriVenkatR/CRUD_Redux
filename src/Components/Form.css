@@ -70,6 +70,27 @@ p{
   content: "✔"; /* Display a checkmark (tick) */
   color: #cd3c73 !important; 
 }
+.color{
+  position: absolute;
+  bottom: 10%;
+  left: 33%;
+  justify-content: space-between;
+}
+.blue{
+  color: #3F62F6;
+  border-radius: 50%;
+  font-size: 25px;
+}
+.orange{
+  color: #EEA70F;
+  border-radius: 50%;
+  font-size: 25px;
+}
+.white{
+   color: #FCFEFD;
+  border-radius: 50%;
+  font-size: 25px;
+}
 .btn-primary{
   padding: 8px 30px;
   border-radius: 20px;
@@ -125,11 +146,23 @@ p{
   .arrow{
   top:35%;
   }
+  .color{
+  position: absolute;
+  bottom: 40%;
+  left: 32%;
+  justify-content: space-between;
+}
 }
 @media screen and (min-width:1020px) and (max-width:1025px) {
   .arrow{
   top:40%;
   }
+  .color{
+  position: absolute;
+  bottom: 25%;
+  left: 20%;
+  justify-content: space-between;
+}
   .button{
   position: absolute;
   bottom: 20%;
@@ -142,6 +175,12 @@ p{
   top:55%;
   left: 47%;
   }
+  .color{
+  position: absolute;
+  bottom: -5%;
+  left: 20%;
+  justify-content: space-between;
+}
   .button{
   right: 8%;
   position: absolute;
