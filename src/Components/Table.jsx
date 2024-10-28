@@ -4,16 +4,21 @@ import { editEntry, deleteEntry } from "../Redux/Action/Action";
 import { useNavigate } from 'react-router-dom';
 import Manage from './app-development.png'
 import './table.css'
-import { FaSearch } from 'react-icons/fa';
+import { FaCaretDown, FaSearch } from 'react-icons/fa';
 import { MdEdit, MdEmail } from 'react-icons/md';
-import { IoIosNotifications } from 'react-icons/io';
-function Table({setFormData}) {
-  const formDataList = useSelector((state) => state.formDataList);
+import { IoIosNotifications, IoMdSettings } from 'react-icons/io';
+import { PiGreaterThanBold } from 'react-icons/pi';
+import Menu from './menu.png'
+import Doc from './document-holder.png'
+import { RiMoneyDollarCircleLine } from 'react-icons/ri';
+import { BsBarChartLineFill } from 'react-icons/bs';
+function Table() {
+  const submittedData = useSelector((state) => state.submittedData);
+  console.log(submittedData)
   const dispatch = useDispatch();
    const navigate = useNavigate();
   const handleEdit = (index) => {
-    const dataToEdit = formDataList[index];
-    setFormData(dataToEdit); // Populate the form with the data
+    const dataToEdit = submittedData[index];
     dispatch(editEntry(index, dataToEdit));
     navigate(`/form?edit=${index}`);
   };
@@ -21,64 +26,133 @@ function Table({setFormData}) {
   const handleDelete = (index) => {
     dispatch(deleteEntry(index));
   };
+    const handleNewData = () => {
+      navigate("/form"); // Navigate to the form for adding new data
+    };
   return (
     <div className="container">
-      <div className="row justify-content-center mt-5">
-        <div className="col-xxl-10">
-          <div className="col-md d-flex">
-            <div className="col-md-2 bg-primary d-flex p-3 company">
-              <img className="manage" src={Manage} alt="" />
-              <p className="text-white m-2">Manage App</p>
-            </div>
-            <div className="p-4">
+      <div className="row pare mt-5">
+        <div className="col-md-10 d-flex">
+          <div className="col-md-2 bg-primary d-flex p-3 company">
+            <img className="manage" src={Manage} alt="" />
+            <p className="text-white m-2">Manage App</p>
+          </div>
+          <div className="d-flex col-md-10  justify-content-between">
+            <div className='p-3'>
               <p className="text-black">
-                <FaSearch className="mx-2" />
+                <FaSearch className="mx-2 icon" />
                 Search for Details
               </p>
-              <div className="icon">
-                <MdEmail />
-                <IoIosNotifications />
-                <p className='bg-primary create'>
-                  <MdEdit />
-                  Create
-                </p>
-              </div>
+            </div>
+            <div className="d-flex icon">
+              <MdEmail className="fs-3 mt-3" />
+              <IoIosNotifications className="fs-3 mt-3" />
+              <button className="create mt-3 px-3 fs-5 btn btn-primary" onClick={handleNewData}>
+                <MdEdit className="fs-3" />
+                Add Employee
+              </button>
             </div>
           </div>
-          <div className="col-md-6">
-            <table>
-              <thead>
-                <tr>
-                  <th>S.No</th>
-                  <th>Name</th>
-                  <th>Phonenumber</th>
-                  <th>Email</th>
-                  <th>Password</th>
-                  <th>Location</th>
-                  <th>Gender</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {formDataList.map((data, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{data.name}</td>
-                    <td>{data.phoneNumber}</td>
-                    <td>{data.email}</td>
-                    <td>{data.password}</td>
-                    <td>{data.location}</td>
-                    <td>{data.gender}</td>
-                    <td>
-                      <button onClick={() => handleEdit(index)}>Edit</button>
-                      <button onClick={() => handleDelete(index)}>
-                        Delete
-                      </button>
-                    </td>
+        </div>
+        <div className="col-md-10 d-flex p-3">
+          <div className="mx-3">
+            <div className="d-flex">
+              <p className="proj bg-primary text-white fs-4 p-2">
+                <MdEdit />
+              </p>
+              <p className="text-primary fs-4 p-2">Project</p>
+            </div>
+            <div className="d-flex mt-3">
+              <img src={Menu} alt="" className="menu" />
+              <p className="text-secondary fs-5 px-2">Menu</p>
+            </div>
+            <div className="d-flex mt-3">
+              <span className="doc p-2">
+                <img src={Doc} alt="" className="doc-img" />
+              </span>
+              <p className="text-secondary fs-5 px-2">Docreader</p>
+            </div>
+            <div className="d-flex mt-3">
+              <span className=" icon">
+                <RiMoneyDollarCircleLine className="fs-1" />
+              </span>
+              <p className="text-secondary fs-5 px-2">Finanse</p>
+            </div>
+            <div className="d-flex mt-3">
+              <span className="doc p-2">
+                <BsBarChartLineFill className="fs-3 icon" />
+              </span>
+              <p className="text-secondary fs-5 px-2">Report</p>
+            </div>
+            <div className="d-flex mt-3">
+              <span className="doc p-2">
+                <IoMdSettings className="fs-3 icon" />
+              </span>
+              <p className="text-secondary fs-5 px-2">Settings</p>
+            </div>
+          </div>
+          <div className="col-md-10 tab">
+            <div className="d-flex justify-content-between m-2">
+              <div className="d-flex m-2">
+                <p className="text-primary me-3">Project </p>
+                <PiGreaterThanBold className="me-3" />
+                <p className="text-primary me-3">2016</p>
+                <PiGreaterThanBold className="me-3" />
+                <p className="text-body">Szpital Jana Pawala II</p>
+              </div>
+              <div className="">
+                <span>
+                  <FaSearch className="mx-2" />
+                </span>
+                <span className="me-2">
+                  Standard View <FaCaretDown />
+                </span>
+                <span>
+                  Recent <FaCaretDown />
+                </span>
+              </div>
+            </div>
+            <div className="m-2 col-md-10 tabl">
+              <table className="table table-striped table-hover">
+                <thead>
+                  <tr className="">
+                    <th>
+                      <input type="checkbox" name="" id="" />
+                    </th>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th>Phonenumber</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Location</th>
+                    <th>Gender</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {submittedData.map((data, index) => (
+                    <tr key={index}>
+                      <td>
+                        <input type="checkbox" name="" id="" />
+                      </td>
+                      <td>{index + 1}</td>
+                      <td>{data.name}</td>
+                      <td>{data.phoneNumber}</td>
+                      <td>{data.email}</td>
+                      <td>{data.password}</td>
+                      <td>{data.location}</td>
+                      <td>{data.gender}</td>
+                      <td>
+                        <button className='btn btn-success' onClick={() => handleEdit(index)}>Edit</button>
+                        <button className='btn btn-danger' onClick={() => handleDelete(index)}>
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

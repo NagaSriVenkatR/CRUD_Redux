@@ -7,9 +7,9 @@ export const setError = (field, error) => ({
   type: "SET_ERROR",
   payload: { field, error },
 });
-export const submitFormData = (data) => ({
+export const submitFormData = (formData) => ({
   type: "SUBMIT_FORM_DATA",
-  payload: data,
+  payload: formData,
 });
 export const editEntry = (index, data) => ({
   type: "EDIT_ENTRY",
@@ -20,3 +20,9 @@ export const deleteEntry = (index) => ({
   type: "DELETE_ENTRY",
   payload: index,
 });
+export const addEntry = (newEntry) => {
+  return {
+    type: "ADD_ENTRY",
+    payload: newEntry,
+  };
+};

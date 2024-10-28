@@ -12,6 +12,7 @@ function App() {
       <Routes>
         <Route path='/'  element={<Form />} />
         <Route path='/table' element={<Table/>}/>
+        <Route path='/form' element={<Form />}/>
       </Routes>
     </Router>
     // <div className='App'>

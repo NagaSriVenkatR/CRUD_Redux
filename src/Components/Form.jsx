@@ -110,7 +110,7 @@ function Form() {
               setError("phoneNumber", "Enter a valid 10-digit phone number")
             );
           }else{
-            dispatch('phoneNumber',"");
+            dispatch(setError("phoneNumber",""))
           }
          }
          break;
@@ -129,33 +129,40 @@ function Form() {
      }
    };
    const validateForm = () => {
+    let isValid = true;
     if (formData.name === "") {
       dispatch(setError("name", "Name is required"));
+      isValid = false;
     } else {
       dispatch(setError("name", ""));
     }
     if (formData.phoneNumber === "") {
       dispatch(setError("phoneNumber", "Phonenumber is required"));
+      isValid = false;
     } else {
       if (!phonenumberPattern.test(formData.phoneNumber)) {
         dispatch(
           setError("phoneNumber", "Enter a valid 10-digit phone number")
         );
+        isValid = false;
       } else {
         dispatch(setError("phoneNumber", ""));
       }
     }
     if (formData.email === "") {
       dispatch(setError("email", "Email is required"));
+      isValid = false;
     } else {
       if (!emailPattern.test(formData.email)) {
         dispatch(setError("email", "Enter a valid email address"));
+        isValid = false;
       } else {
         dispatch(setError("email", ""));
       }
     }
     if (formData.password === "") {
       dispatch(setError("password", "Password is required"));
+      isValid = false;
     } else {
       if (!minlengthCharacterPattern.test(formData.password)) {
         dispatch(
@@ -164,14 +171,17 @@ function Form() {
             "Password must be at least 8 characters required"
           )
         );
+        isValid = false;
       } else if (!lowerCasePattern.test(formData.password)) {
         dispatch(
           setError("password", "Password must be at least 1 lowercase required")
         );
+        isValid = false;
       } else if (!numberPattern.test(formData.password)) {
         dispatch(
           setError("password", "Password must be at least 1 number required")
         );
+        isValid = false;
       } else if (!specialCharacterPattern.test(formData.password)) {
         dispatch(
           setError(
@@ -179,16 +189,19 @@ function Form() {
             "Password must be at least 1 special character required"
           )
         );
+        isValid = false;
       } else if (!upperCasePattern.test(formData.password)) {
         dispatch(
           setError("password", "Password must be at least 1 uppercase required")
         );
+        isValid = false;
       } else {
         dispatch(setError("password", ""));
       }
     }
     if (formData.confirmPassword === "") {
       dispatch(setError("confirmPassword", "Confirm Password is required"));
+      isValid = false;
     } else {
       if (formData.password !== formData.confirmPassword) {
         dispatch(
@@ -197,27 +210,28 @@ function Form() {
             "Confirm password do not match with password"
           )
         );
+        isValid = false;
       } else {
         dispatch(setError("confirmPassword", ""));
       }
     }
     if (formData.location === "") {
       dispatch(setError("location", "Location is required"));
+      isValid = false;
     } else {
       dispatch(setError("location", ""));
     }
     if (formData.gender === "") {
       dispatch(setError("gender", "Gender is required"));
+      isValid = false;
     } else {
       dispatch(setError("gender", ""));
     }
+    return isValid;
    }
    const handleSubmit = (e) => {
      e.preventDefault();
-     
-      const isValid = validateForm(); // Create validation logic here if not already
-      
-      if (isValid) {
+      if (validateForm()) {
         dispatch(submitFormData(formData));
         navigate("/table"); // Navigate to the table page
       }

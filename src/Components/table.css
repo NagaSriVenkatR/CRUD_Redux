@@ -1,9 +1,40 @@
+
+.pare{
+  justify-content: center !important;
+}
 .company{
   border-top-left-radius: 25px;
 }
 .manage{
-  height: 40px;
+  height: 20px;
+}
+.tabl{
+  overflow-x: scroll !important;
+}
+.tab{
+  background-color: #FCFCFC !important;
 }
 .create{
   border-radius: 25px;
+  color: white;
+  font-size: 15px;
+  height: 35px;
+  background-color: #0D6EFD;
+  border-color: #0D6EFD;
+}
+.proj{
+  border-radius: 50%;
+}
+.menu{
+  height: 40px;
+}
+.doc{
+  border: 3px solid lightgrey;
+  border-radius: 50%;
+}
+.doc-img{
+  height: 20px;
+}
+thead{
+  color: lightgray !important;
 }

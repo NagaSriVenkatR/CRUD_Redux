@@ -17,7 +17,7 @@ const initialState = {
     gender: "",
     location: "",
   },
-  formDataList: []
+  submittedData: [],
 };
 function formReducer(state = initialState, action) {
   switch (action.type) {
@@ -33,6 +33,11 @@ function formReducer(state = initialState, action) {
           [action.payload.field]: "", // Clear error when field is updated
         },
       };
+    case "ADD_ENTRY":
+      return {
+        ...state,
+        submittedData: [...state.submittedData, action.payload],
+      };
 
     case "SET_ERROR":
       return {
@@ -45,20 +50,25 @@ function formReducer(state = initialState, action) {
     case "SUBMIT_FORM_DATA":
       return {
         ...state,
-        formDataList: [...state.formDataList, action.payload],
+        submittedData: [...state.submittedData, action.payload],
+        formData: {}, // Reset form data
+        error: {},
       };
     case "EDIT_ENTRY":
-      const updatedList = [...state.formDataList];
+      const updatedList = [...state.submittedData];
       updatedList[action.payload.index] = action.payload.data;
       return {
         ...state,
-        formDataList: updatedList,
+        submittedData: updatedList,
+        formData: action.payload.data,
       };
 
     case "DELETE_ENTRY":
       return {
         ...state,
-        formDataList: state.formDataList.filter((_, i) => i !== action.payload),
+        submittedData: state.submittedData.filter(
+          (_, i) => i !== action.payload
+        ),
       };
 
     default:
