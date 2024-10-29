@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css";
 import './Form.css'
 import Logo from './logo.png'
@@ -11,10 +11,11 @@ import { FaCircle, FaPhoneAlt } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { FaLocationDot } from 'react-icons/fa6';
 import Arrow from './right-chevron.png'
-import { updateForm, setError, submitFormData } from "../Redux/Action/Action";
+import { updateForm, setError, submitFormData, setEditing, editEntry } from "../Redux/Action/Action";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 function Form() {
+  const isEditing = useSelector((state) => state.isEditing); // Flag for edit mode
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.formData); // Access formData from state
@@ -229,10 +230,30 @@ function Form() {
     }
     return isValid;
    }
+   const buttonSignin = isEditing ? "Update" : "Sign Up";
+   useEffect(() => {
+     if (formData.id) {
+       dispatch(setEditing(true)); // Set editing mode
+     } else {
+       dispatch(setEditing(false)); // Reset if not editing
+     }
+   }, [dispatch, formData]);
    const handleSubmit = (e) => {
      e.preventDefault();
+     console.log("formData ID:", formData.id);
+     console.log("isEditing:", formData.isEditing);
+     console.log("formData before submit:", formData);
+
       if (validateForm()) {
-        dispatch(submitFormData(formData));
+        if (formData.isEditing) {
+          // Dispatch an action to update the existing entry
+          dispatch(editEntry(formData));
+          console.log("Form Data on Submit: ", formData);
+        } else {
+          // Dispatch an action to add a new entry
+          dispatch(submitFormData(formData));
+          console.log("Submitted Form Data: ", formData);
+        }
         navigate("/table"); // Navigate to the table page
       }
    };
@@ -299,7 +320,7 @@ function Form() {
                     name="name"
                     type="text"
                     placeholder="Full Name"
-                    value={formData.name}
+                    value={formData.name || ""}
                     onBlur={handleBlur}
                     onChange={handleInputChange}
                   />
@@ -314,7 +335,7 @@ function Form() {
                   <input
                     className="form-control"
                     name="phoneNumber"
-                    value={formData.phoneNumber}
+                    value={formData.phoneNumber || ""}
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     type="tel"
@@ -332,7 +353,7 @@ function Form() {
                     className="form-control"
                     type="email"
                     name="email"
-                    value={formData.email}
+                    value={formData.email || ""}
                     onBlur={handleBlur}
                     onChange={handleInputChange}
                     placeholder="Email"
@@ -348,7 +369,7 @@ function Form() {
                   <input
                     className="form-control"
                     type="password"
-                    value={formData.password}
+                    value={formData.password || ""}
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     name="password"
@@ -365,7 +386,7 @@ function Form() {
                   <input
                     className="form-control"
                     type="password"
-                    value={formData.confirmPassword}
+                    value={formData.confirmPassword || ""}
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     name="confirmPassword"
@@ -383,7 +404,7 @@ function Form() {
                     className="form-control"
                     type="text"
                     name="location"
-                    value={formData.location}
+                    value={formData.location || ""}
                     onBlur={handleBlur}
                     onChange={handleInputChange}
                     placeholder="Location"
@@ -399,7 +420,7 @@ function Form() {
                   <select
                     className="form-select"
                     name="gender"
-                    value={formData.gender}
+                    value={formData.gender || ""}
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     id=""
@@ -432,36 +453,33 @@ function Form() {
                     RESET
                   </button>
                 </div>
-                <div className="col-md-4">
+                <div className="sign">
+                  <button className="btn btn-primary" onClick={handleSubmit}>
+                    {buttonSignin}
+                  </button>
+                </div>
+              </div>
+              <div className="button row d-none d-md-flex">
+                <div className="col-md-6 me-5">
                   <button
                     className="btn btn-primary reset"
+                    type="submit"
                     onClick={handleSubmit}
                   >
-                    SIGNUP
+                    {buttonSignin}
+                  </button>
+                </div>
+                <div className="col-md-3">
+                  <button
+                    className="btn btn-danger reset"
+                    type="button"
+                    onClick={handleReset}
+                  >
+                    RESET
                   </button>
                 </div>
               </div>
             </form>
-            <div className="button row d-none d-md-flex">
-              <div className="col-md-4 me-5">
-                <button
-                  className="btn btn-danger reset"
-                  type="button"
-                  onClick={handleReset}
-                >
-                  RESET
-                </button>
-              </div>
-              <div className="col-md-4">
-                <button
-                  className="btn btn-primary reset"
-                  type="submit"
-                  onClick={handleSubmit}
-                >
-                  SIGNUP
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>

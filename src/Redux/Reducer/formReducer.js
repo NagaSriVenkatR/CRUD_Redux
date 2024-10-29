@@ -7,6 +7,8 @@ const initialState = {
     phoneNumber: "",
     gender: "",
     location: "",
+    isEditing: false, // New flag to track editing mode
+    id: null,
   },
   error: {
     name: "",
@@ -60,9 +62,13 @@ function formReducer(state = initialState, action) {
       return {
         ...state,
         submittedData: updatedList,
-        formData: action.payload.data,
+        formData:{ ...action.payload.data,isEditing:true},
       };
-
+    case "SET_EDITING": // New action type for setting editing mode
+      return {
+        ...state,
+        formData: { ...state.formData, isEditing: action.payload }, // Set editing mode
+      };
     case "DELETE_ENTRY":
       return {
         ...state,

@@ -1,10 +1,10 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { editEntry, deleteEntry } from "../Redux/Action/Action";
+import { deleteEntry, editEntry, setEditing } from "../Redux/Action/Action";
 import { useNavigate } from 'react-router-dom';
 import Manage from './app-development.png'
 import './table.css'
-import { FaCaretDown, FaSearch } from 'react-icons/fa';
+import { FaCaretDown, FaSearch, FaUserEdit } from 'react-icons/fa';
 import { MdEdit, MdEmail } from 'react-icons/md';
 import { IoIosNotifications, IoMdSettings } from 'react-icons/io';
 import { PiGreaterThanBold } from 'react-icons/pi';
@@ -12,6 +12,8 @@ import Menu from './menu.png'
 import Doc from './document-holder.png'
 import { RiMoneyDollarCircleLine } from 'react-icons/ri';
 import { BsBarChartLineFill } from 'react-icons/bs';
+import { TiUserDelete } from 'react-icons/ti';
+import { IoPersonAdd } from 'react-icons/io5';
 function Table() {
   const submittedData = useSelector((state) => state.submittedData);
   console.log(submittedData)
@@ -20,6 +22,7 @@ function Table() {
   const handleEdit = (index) => {
     const dataToEdit = submittedData[index];
     dispatch(editEntry(index, dataToEdit));
+    dispatch(setEditing(true));
     navigate(`/form?edit=${index}`);
   };
 
@@ -32,13 +35,13 @@ function Table() {
   return (
     <div className="container">
       <div className="row pare mt-5">
-        <div className="col-md-10 d-flex">
+        <div className="col-md-12 d-flex">
           <div className="col-md-2 bg-primary d-flex p-3 company">
             <img className="manage" src={Manage} alt="" />
             <p className="text-white m-2">Manage App</p>
           </div>
           <div className="d-flex col-md-10  justify-content-between">
-            <div className='p-3'>
+            <div className="p-3">
               <p className="text-black">
                 <FaSearch className="mx-2 icon" />
                 Search for Details
@@ -47,14 +50,14 @@ function Table() {
             <div className="d-flex icon">
               <MdEmail className="fs-3 mt-3" />
               <IoIosNotifications className="fs-3 mt-3" />
-              <button className="create mt-3 px-3 fs-5 btn btn-primary" onClick={handleNewData}>
-                <MdEdit className="fs-3" />
-                Add Employee
-              </button>
+              <span className="create mt-3 px-3 fs-5" onClick={handleNewData}>
+                <IoPersonAdd className="me-2 " />
+                New Employee
+              </span>
             </div>
           </div>
         </div>
-        <div className="col-md-10 d-flex p-3">
+        <div className="col-md-12 d-flex p-3">
           <div className="mx-3">
             <div className="d-flex">
               <p className="proj bg-primary text-white fs-4 p-2">
@@ -91,7 +94,7 @@ function Table() {
               <p className="text-secondary fs-5 px-2">Settings</p>
             </div>
           </div>
-          <div className="col-md-10 tab">
+          <div className="col-md table-responsive">
             <div className="d-flex justify-content-between m-2">
               <div className="d-flex m-2">
                 <p className="text-primary me-3">Project </p>
@@ -112,7 +115,7 @@ function Table() {
                 </span>
               </div>
             </div>
-            <div className="m-2 col-md-10 tabl">
+            <div className="m-2 col-md table-responsive">
               <table className="table table-striped table-hover">
                 <thead>
                   <tr className="">
@@ -142,10 +145,18 @@ function Table() {
                       <td>{data.password}</td>
                       <td>{data.location}</td>
                       <td>{data.gender}</td>
-                      <td>
-                        <button className='btn btn-success' onClick={() => handleEdit(index)}>Edit</button>
-                        <button className='btn btn-danger' onClick={() => handleDelete(index)}>
-                          Delete
+                      <td className="d-flex">
+                        <button
+                          className="btn btn-success"
+                          onClick={() => handleEdit(index)}
+                        >
+                          <FaUserEdit />
+                        </button>
+                        <button
+                          className="btn btn-warning ms-2"
+                          onClick={() => handleDelete(index)}
+                        >
+                          <TiUserDelete />
                         </button>
                       </td>
                     </tr>

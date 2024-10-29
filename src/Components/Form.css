@@ -48,8 +48,11 @@ p{
 }
 .button{
   position: absolute;
-  bottom: 50px;
+  bottom: 40px;
   justify-content: space-between !important;
+}
+.sign{
+  margin-left: 8px;
 }
 .icon{
   color: lightgray;
