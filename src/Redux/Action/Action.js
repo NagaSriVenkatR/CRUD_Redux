@@ -11,9 +11,9 @@ export const submitFormData = (formData) => ({
   type: "SUBMIT_FORM_DATA",
   payload: formData,
 });
-export const editEntry = ( index, data ) => ({
+export const editEntry = ( id, updatedData ) => ({
   type: "EDIT_ENTRY",
-  payload: { index, data },
+  payload: { id, updatedData },
 });
 export const setEditing = (isEditing) => ({
   type: "SET_EDITING",
@@ -23,9 +23,3 @@ export const deleteEntry = (index) => ({
   type: "DELETE_ENTRY",
   payload: index,
 });
-export const addEntry = (newEntry) => {
-  return {
-    type: "ADD_ENTRY",
-    payload: newEntry,
-  };
-};

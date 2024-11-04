@@ -36,6 +36,7 @@ function formReducer(state = initialState, action) {
         },
       };
     case "ADD_ENTRY":
+      if (state.formData.isEditing) return state;
       return {
         ...state,
         submittedData: [...state.submittedData, action.payload],
@@ -53,21 +54,26 @@ function formReducer(state = initialState, action) {
       return {
         ...state,
         submittedData: [...state.submittedData, action.payload],
-        formData: {}, // Reset form data
+        formData: {...initialState.formData}, // Reset form data
         error: {},
       };
     case "EDIT_ENTRY":
-      const updatedList = [...state.submittedData];
-      updatedList[action.payload.index] = action.payload.data;
       return {
         ...state,
-        submittedData: updatedList,
-        formData:{ ...action.payload.data,isEditing:true},
+        submittedData: state.submittedData.map((item) =>
+          item.id === action.payload.id ? action.payload.updatedData : item
+        ),
       };
+
+       
     case "SET_EDITING": // New action type for setting editing mode
       return {
         ...state,
-        formData: { ...state.formData, isEditing: action.payload }, // Set editing mode
+        formData: {
+          ...state.formData,
+          isEditing: action.payload.isEditing,
+          id: action.payload.id,
+        }, // Set editing mode
       };
     case "DELETE_ENTRY":
       return {

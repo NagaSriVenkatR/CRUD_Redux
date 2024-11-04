@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteEntry, editEntry, setEditing } from "../Redux/Action/Action";
+import { deleteEntry, editEntry} from "../Redux/Action/Action";
 import { useNavigate } from 'react-router-dom';
 import Manage from './app-development.png'
 import './table.css'
@@ -19,10 +19,13 @@ function Table() {
   console.log(submittedData)
   const dispatch = useDispatch();
    const navigate = useNavigate();
+   if (!submittedData) {
+     console.error("submittedData is undefined");
+     return null; // or some loading/error component
+   }
   const handleEdit = (index) => {
     const dataToEdit = submittedData[index];
-    dispatch(editEntry(index, dataToEdit));
-    dispatch(setEditing(true));
+    dispatch(editEntry(index, { ...dataToEdit, isEditing: true, id: index }));
     navigate(`/form?edit=${index}`);
   };
 
@@ -134,7 +137,7 @@ function Table() {
                 </thead>
                 <tbody>
                   {submittedData.map((data, index) => (
-                    <tr key={index}>
+                    <tr key={ index}>
                       <td>
                         <input type="checkbox" name="" id="" />
                       </td>

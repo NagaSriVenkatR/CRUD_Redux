@@ -11,11 +11,12 @@ import { FaCircle, FaPhoneAlt } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { FaLocationDot } from 'react-icons/fa6';
 import Arrow from './right-chevron.png'
-import { updateForm, setError, submitFormData, setEditing, editEntry } from "../Redux/Action/Action";
+import { updateForm, setError, submitFormData,  editEntry, setEditing } from "../Redux/Action/Action";
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate} from 'react-router-dom';
 function Form() {
   const isEditing = useSelector((state) => state.isEditing); // Flag for edit mode
+  const submittedData = useSelector((state) => state.submittedData); // Replace with the correct selector
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.formData); // Access formData from state
@@ -28,6 +29,20 @@ function Form() {
   let specialCharacterPattern = /[~!@#%&()$^_?]/;
   let minlengthCharacterPattern = /^.{8,16}$/;
   let phonenumberPattern = /^([0-9]{10})$/;
+  const location = useLocation();
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const editIndex = queryParams.get("edit");
+    if (editIndex !== null) {
+      const index = parseInt(editIndex);
+      // Fetch the data from submittedData using index
+      const dataToEdit = submittedData[index]; // Make sure submittedData is accessible
+
+      if (dataToEdit) {
+        dispatch(submitFormData(dataToEdit)); // Set form data with dataToEdit
+      }
+    }
+  }, [location.search, dispatch,submittedData]);
    const handleInputChange = (e) => {
      const { name, value } = e.target;
      dispatch(updateForm(name, value)); 
@@ -231,13 +246,6 @@ function Form() {
     return isValid;
    }
    const buttonSignin = isEditing ? "Update" : "Sign Up";
-   useEffect(() => {
-     if (formData.id) {
-       dispatch(setEditing(true)); // Set editing mode
-     } else {
-       dispatch(setEditing(false)); // Reset if not editing
-     }
-   }, [dispatch, formData]);
    const handleSubmit = (e) => {
      e.preventDefault();
      console.log("formData ID:", formData.id);
@@ -247,13 +255,28 @@ function Form() {
       if (validateForm()) {
         if (formData.isEditing) {
           // Dispatch an action to update the existing entry
-          dispatch(editEntry(formData));
-          console.log("Form Data on Submit: ", formData);
+          dispatch(editEntry(formData.id,formData));
+          console.log(
+            "Updating entry with ID:",
+            formData.id,
+            "Data:",
+            formData
+          );
         } else {
           // Dispatch an action to add a new entry
           dispatch(submitFormData(formData));
           console.log("Submitted Form Data: ", formData);
         }
+        dispatch(setEditing(false));
+        dispatch(updateForm("id", null)); // Reset ID in form data
+        dispatch(updateForm("isEditing", false)); // Reset editing mode in form data
+        dispatch(updateForm("name", "")); // Reset form fields
+        dispatch(updateForm("email", ""));
+        dispatch(updateForm("password", ""));
+        dispatch(updateForm("confirmPassword", ""));
+        dispatch(updateForm("phoneNumber", ""));
+        dispatch(updateForm("gender", ""));
+        dispatch(updateForm("location", ""));
         navigate("/table"); // Navigate to the table page
       }
    };
@@ -320,7 +343,7 @@ function Form() {
                     name="name"
                     type="text"
                     placeholder="Full Name"
-                    value={formData.name || ""}
+                    value={formData.name}
                     onBlur={handleBlur}
                     onChange={handleInputChange}
                   />
@@ -335,7 +358,7 @@ function Form() {
                   <input
                     className="form-control"
                     name="phoneNumber"
-                    value={formData.phoneNumber || ""}
+                    value={formData.phoneNumber}
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     type="tel"
@@ -353,7 +376,7 @@ function Form() {
                     className="form-control"
                     type="email"
                     name="email"
-                    value={formData.email || ""}
+                    value={formData.email}
                     onBlur={handleBlur}
                     onChange={handleInputChange}
                     placeholder="Email"
@@ -369,7 +392,7 @@ function Form() {
                   <input
                     className="form-control"
                     type="password"
-                    value={formData.password || ""}
+                    value={formData.password}
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     name="password"
@@ -386,7 +409,7 @@ function Form() {
                   <input
                     className="form-control"
                     type="password"
-                    value={formData.confirmPassword || ""}
+                    value={formData.confirmPassword}
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     name="confirmPassword"
@@ -404,7 +427,7 @@ function Form() {
                     className="form-control"
                     type="text"
                     name="location"
-                    value={formData.location || ""}
+                    value={formData.location}
                     onBlur={handleBlur}
                     onChange={handleInputChange}
                     placeholder="Location"
@@ -420,7 +443,7 @@ function Form() {
                   <select
                     className="form-select"
                     name="gender"
-                    value={formData.gender || ""}
+                    value={formData.gender}
                     onChange={handleInputChange}
                     onBlur={handleBlur}
                     id=""
