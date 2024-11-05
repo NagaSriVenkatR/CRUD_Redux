@@ -24,8 +24,8 @@ function Table() {
      return null; // or some loading/error component
    }
   const handleEdit = (index) => {
-    const dataToEdit = submittedData[index];
-    dispatch(editEntry(index, { ...dataToEdit, isEditing: true, id: index }));
+    const dataToEdit = submittedData[index];; 
+    dispatch(editEntry(index, dataToEdit));
     navigate(`/form?edit=${index}`);
   };
 

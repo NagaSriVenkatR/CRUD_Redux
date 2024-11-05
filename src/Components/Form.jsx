@@ -13,14 +13,20 @@ import { FaLocationDot } from 'react-icons/fa6';
 import Arrow from './right-chevron.png'
 import { updateForm, setError, submitFormData,  editEntry, setEditing } from "../Redux/Action/Action";
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate} from 'react-router-dom';
+import {  useLocation, useNavigate} from 'react-router-dom';
 function Form() {
   const isEditing = useSelector((state) => state.isEditing); // Flag for edit mode
-  const submittedData = useSelector((state) => state.submittedData); // Replace with the correct selector
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.formData); // Access formData from state
   const errors = useSelector((state) => state.error); // Access errors from state
+  useEffect(() => {
+    if (formData.id) {
+      dispatch(setEditing(true)); // Set editing mode
+    } else {
+      dispatch(setEditing(false)); // Reset if not editing
+    }
+  }, [dispatch, formData]);
   let emailPattern =
     /^([a-zA-Z0-9]+)@([a-zA-Z0-9-]+).([a-zA-Z]+).([a-zA-Z]{2,20})$/;
   let upperCasePattern = /[A-Z]/;
@@ -29,20 +35,6 @@ function Form() {
   let specialCharacterPattern = /[~!@#%&()$^_?]/;
   let minlengthCharacterPattern = /^.{8,16}$/;
   let phonenumberPattern = /^([0-9]{10})$/;
-  const location = useLocation();
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const editIndex = queryParams.get("edit");
-    if (editIndex !== null) {
-      const index = parseInt(editIndex);
-      // Fetch the data from submittedData using index
-      const dataToEdit = submittedData[index]; // Make sure submittedData is accessible
-
-      if (dataToEdit) {
-        dispatch(submitFormData(dataToEdit)); // Set form data with dataToEdit
-      }
-    }
-  }, [location.search, dispatch,submittedData]);
    const handleInputChange = (e) => {
      const { name, value } = e.target;
      dispatch(updateForm(name, value)); 
