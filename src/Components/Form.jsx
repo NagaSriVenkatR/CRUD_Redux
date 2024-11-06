@@ -11,7 +11,7 @@ import { FaCircle, FaPhoneAlt } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { FaLocationDot } from 'react-icons/fa6';
 import Arrow from './right-chevron.png'
-import { updateForm, setError, submitFormData,  editEntry, setEditing } from "../Redux/Action/Action";
+import { updateForm, setError, submitFormData,  editEntry} from "../Redux/Action/Action";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate} from 'react-router-dom';
 function Form() {
@@ -20,13 +20,10 @@ function Form() {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.formData); // Access formData from state
   const errors = useSelector((state) => state.error); // Access errors from state
-  useEffect(() => {
-    if (formData.id) {
-      dispatch(setEditing(true)); // Set editing mode
-    } else {
-      dispatch(setEditing(false)); // Reset if not editing
-    }
-  }, [dispatch, formData]);
+   const submittedData = useSelector((state) => state.submittedData);
+   useEffect(() => {
+     console.log("Updated submittedData from Redux:", submittedData);
+   }, [submittedData]);
   let emailPattern =
     /^([a-zA-Z0-9]+)@([a-zA-Z0-9-]+).([a-zA-Z]+).([a-zA-Z]{2,20})$/;
   let upperCasePattern = /[A-Z]/;
@@ -240,14 +237,14 @@ function Form() {
    const buttonSignin = isEditing ? "Update" : "Sign Up";
    const handleSubmit = (e) => {
      e.preventDefault();
-     console.log("formData ID:", formData.id);
+     console.log("formData Id:", formData.id);
      console.log("isEditing:", formData.isEditing);
      console.log("formData before submit:", formData);
 
       if (validateForm()) {
         if (formData.isEditing) {
           // Dispatch an action to update the existing entry
-          dispatch(editEntry(formData.id,formData));
+          dispatch(editEntry(formData));
           console.log(
             "Updating entry with ID:",
             formData.id,
@@ -259,19 +256,11 @@ function Form() {
           dispatch(submitFormData(formData));
           console.log("Submitted Form Data: ", formData);
         }
-        dispatch(setEditing(false));
-        dispatch(updateForm("id", null)); // Reset ID in form data
-        dispatch(updateForm("isEditing", false)); // Reset editing mode in form data
-        dispatch(updateForm("name", "")); // Reset form fields
-        dispatch(updateForm("email", ""));
-        dispatch(updateForm("password", ""));
-        dispatch(updateForm("confirmPassword", ""));
-        dispatch(updateForm("phoneNumber", ""));
-        dispatch(updateForm("gender", ""));
-        dispatch(updateForm("location", ""));
         navigate("/table"); // Navigate to the table page
       }
    };
+   
+   
 
    const handleReset = () => {
      dispatch(updateForm("name", ""));

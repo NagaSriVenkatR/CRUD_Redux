@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteEntry, editEntry} from "../Redux/Action/Action";
+import { deleteEntry, editEntry, setEditing} from "../Redux/Action/Action";
 import { useNavigate } from 'react-router-dom';
 import Manage from './app-development.png'
 import './table.css'
@@ -16,16 +16,17 @@ import { TiUserDelete } from 'react-icons/ti';
 import { IoPersonAdd } from 'react-icons/io5';
 function Table() {
   const submittedData = useSelector((state) => state.submittedData);
-  console.log(submittedData)
+  console.log(submittedData);
+    useEffect(() => {
+      console.log("Updated Submitted Data:", submittedData);
+    }, [submittedData]);
   const dispatch = useDispatch();
    const navigate = useNavigate();
-   if (!submittedData) {
-     console.error("submittedData is undefined");
-     return null; // or some loading/error component
-   }
   const handleEdit = (index) => {
     const dataToEdit = submittedData[index];; 
     dispatch(editEntry(index, dataToEdit));
+    dispatch(setEditing(true)); 
+    console.log("Edit Data",dataToEdit);
     navigate(`/form?edit=${index}`);
   };
 
@@ -137,7 +138,7 @@ function Table() {
                 </thead>
                 <tbody>
                   {submittedData.map((data, index) => (
-                    <tr key={ index}>
+                    <tr key={index}>
                       <td>
                         <input type="checkbox" name="" id="" />
                       </td>
