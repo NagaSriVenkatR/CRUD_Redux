@@ -11,9 +11,9 @@ export const submitFormData = (formData) => ({
   type: "SUBMIT_FORM_DATA",
   payload: formData,
 });
-export const editEntry = ( index,data) => ({
+export const editEntry = ( id,data) => ({
   type: "EDIT_ENTRY",
-  payload: { index,data },
+  payload: { id,data },
 });
 export const setEditing = (isEditing) => ({
   type: "SET_EDITING",

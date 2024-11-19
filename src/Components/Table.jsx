@@ -22,13 +22,20 @@ function Table() {
     }, [submittedData]);
   const dispatch = useDispatch();
    const navigate = useNavigate();
-  const handleEdit = (index) => {
-    const dataToEdit = submittedData[index];; 
-    dispatch(editEntry(index, dataToEdit));
-    dispatch(setEditing(true)); 
-    console.log("Edit Data",dataToEdit);
-    navigate(`/form?edit=${index}`);
-  };
+const handleEdit = (id) => {
+  const dataToEdit = submittedData.find((data) => data.id === id);
+
+  if (!dataToEdit) {
+    console.error("No data found for ID:", id);
+    return; // Exit if no match
+  }
+
+  dispatch(editEntry(id, dataToEdit)); // Dispatch with id
+  dispatch(setEditing(true));
+  navigate(`/form?edit=${id}`); // Navigate with id
+};
+
+
 
   const handleDelete = (index) => {
     dispatch(deleteEntry(index));
@@ -64,38 +71,38 @@ function Table() {
         <div className="col-md-12 d-flex p-3">
           <div className="mx-3">
             <div className="d-flex">
-              <p className="proj bg-primary text-white fs-4 p-2">
+              <p className="proj bg-primary text-white">
                 <MdEdit />
               </p>
-              <p className="text-primary fs-4 p-2">Project</p>
+              <p className="text-primary">Project</p>
             </div>
             <div className="d-flex mt-3">
               <img src={Menu} alt="" className="menu" />
-              <p className="text-secondary fs-5 px-2">Menu</p>
+              <p className="text-secondary">Menu</p>
             </div>
             <div className="d-flex mt-3">
-              <span className="doc p-2">
+              <span className="doc">
                 <img src={Doc} alt="" className="doc-img" />
               </span>
-              <p className="text-secondary fs-5 px-2">Docreader</p>
+              <p className="text-secondary">Docreader</p>
             </div>
             <div className="d-flex mt-3">
               <span className=" icon">
-                <RiMoneyDollarCircleLine className="fs-1" />
+                <RiMoneyDollarCircleLine className="dollar" />
               </span>
-              <p className="text-secondary fs-5 px-2">Finanse</p>
+              <p className="text-secondary">Finanse</p>
             </div>
             <div className="d-flex mt-3">
-              <span className="doc p-2">
-                <BsBarChartLineFill className="fs-3 icon" />
+              <span className="doc">
+                <BsBarChartLineFill className="report" />
               </span>
-              <p className="text-secondary fs-5 px-2">Report</p>
+              <p className="text-secondary">Report</p>
             </div>
             <div className="d-flex mt-3">
-              <span className="doc p-2">
-                <IoMdSettings className="fs-3 icon" />
+              <span className="doc">
+                <IoMdSettings className="setting" />
               </span>
-              <p className="text-secondary fs-5 px-2">Settings</p>
+              <p className="text-secondary">Settings</p>
             </div>
           </div>
           <div className="col-md table-responsive">
@@ -119,7 +126,7 @@ function Table() {
                 </span>
               </div>
             </div>
-            <div className="m-2 col-md table-responsive">
+            <div className="m-2 col-md">
               <table className="table table-striped table-hover">
                 <thead>
                   <tr className="">
@@ -138,7 +145,7 @@ function Table() {
                 </thead>
                 <tbody>
                   {submittedData.map((data, index) => (
-                    <tr key={index}>
+                    <tr key={data.id}>
                       <td>
                         <input type="checkbox" name="" id="" />
                       </td>
@@ -152,7 +159,7 @@ function Table() {
                       <td className="d-flex">
                         <button
                           className="btn btn-success"
-                          onClick={() => handleEdit(index)}
+                          onClick={() => handleEdit(data.id)}
                         >
                           <FaUserEdit />
                         </button>

@@ -11,7 +11,7 @@ import { FaCircle, FaPhoneAlt } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { FaLocationDot } from 'react-icons/fa6';
 import Arrow from './right-chevron.png'
-import { updateForm, setError, submitFormData,  editEntry} from "../Redux/Action/Action";
+import { updateForm, setError, submitFormData} from "../Redux/Action/Action";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate} from 'react-router-dom';
 function Form() {
@@ -234,17 +234,17 @@ function Form() {
     }
     return isValid;
    }
-   const buttonSignin = isEditing ? "Update" : "Sign Up";
+   const buttonSignin = formData.isEditing ? "Update" : "Sign Up";
+   console.log("isEditing:", isEditing);
    const handleSubmit = (e) => {
      e.preventDefault();
      console.log("formData Id:", formData.id);
      console.log("isEditing:", formData.isEditing);
      console.log("formData before submit:", formData);
-
       if (validateForm()) {
         if (formData.isEditing) {
           // Dispatch an action to update the existing entry
-          dispatch(editEntry(formData));
+          dispatch(submitFormData(formData));
           console.log(
             "Updating entry with ID:",
             formData.id,
@@ -449,34 +449,34 @@ function Form() {
                 </label>
               </div>
               <div className="d-flex d-md-none butt">
-                <div className="col-md-4 sign">
+                <div className="col-md-4 d-flex sign">
+                  <div className="sign me-5">
+                    <button className="btn btn-primary" type='submit' onClick={handleSubmit}>
+                      {buttonSignin}
+                    </button>
+                  </div>
                   <button
                     className="btn btn-danger reset"
+                    type='reset'
                     onClick={handleReset}
                   >
                     RESET
                   </button>
                 </div>
-                <div className="sign">
-                  <button className="btn btn-primary" onClick={handleSubmit}>
-                    {buttonSignin}
-                  </button>
-                </div>
               </div>
               <div className="button row d-none d-md-flex">
-                <div className="col-md-6 me-5">
+                <div className="col-md-6 me-1">
                   <button
                     className="btn btn-primary reset"
                     type="submit"
-                    onClick={handleSubmit}
                   >
                     {buttonSignin}
                   </button>
                 </div>
-                <div className="col-md-3">
+                <div className="col-md-3 me-5">
                   <button
                     className="btn btn-danger reset"
-                    type="button"
+                    type="reset"
                     onClick={handleReset}
                   >
                     RESET
